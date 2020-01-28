@@ -1,0 +1,3 @@
+# userscripts
+
+Userscripts for browser
