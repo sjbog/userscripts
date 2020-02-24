@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name       Habr comments filter
-// @version    1.1.0
+// @version    1.1.1
 // @match      https://habr.com/*/post/*
 // @match      https://habr.com/*/company/*/blog/*
 // @noframes
@@ -15,7 +15,7 @@
 
 const hideClassV3 = "hidden"; // Bootstrap v3
 const hideClassV4 = "d-none"; // Bootstrap v4
-const commentsScoreMin = 10;
+const commentsScoreMin = 5;
 const commentsElem = document.getElementById("comments");
 
 commentsElem.querySelectorAll(".inline-list_comment-nav, .parent_id, .js-form_placeholder, .comment__collapse")
