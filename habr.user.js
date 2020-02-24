@@ -1,6 +1,6 @@
 // ==UserScript==
-// @name       Habr comments filter
-// @version    1.1.1
+// @name       Habr comments filter & enhancements
+// @version    1.1.2
 // @match      https://habr.com/*/post/*
 // @match      https://habr.com/*/company/*/blog/*
 // @noframes
@@ -9,6 +9,7 @@
 // @author     sjbog
 // @license    Mozilla Public License Version 2.0
 // @downloadURL https://github.com/sjbog/userscripts/raw/master/habr.user.js
+// @homepageURL https://github.com/sjbog/userscripts/
 // ==/UserScript==
 
 "use strict";
