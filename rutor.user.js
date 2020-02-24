@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name       Rutor
-// @version    1.0.1
+// @version    1.0.2
 // @match      http://rutor.info/*
 // @match      https://rutor.info/*
 // @match      http://*.rutor.info/*
@@ -11,6 +11,7 @@
 // @author     sjbog
 // @license    Mozilla Public License Version 2.0
 // @downloadURL https://github.com/sjbog/userscripts/raw/master/rutor.user.js
+// @homepageURL https://github.com/sjbog/userscripts/
 // ==/UserScript==
 
 "use strict";
