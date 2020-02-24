@@ -1,10 +1,10 @@
 // ==UserScript==
 // @name       Habr comments filter & enhancements
-// @version    1.1.2
+// @version    1.1.3
 // @match      https://habr.com/*/post/*
 // @match      https://habr.com/*/company/*/blog/*
 // @noframes
-// @run-at     document-end
+// @run-at     document-idle
 // @grant      none
 // @author     sjbog
 // @license    Mozilla Public License Version 2.0
