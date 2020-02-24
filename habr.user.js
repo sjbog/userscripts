@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name       Habr comments filter
-// @version    1.0
+// @version    1.1.0
 // @match      https://habr.com/*/post/*
 // @match      https://habr.com/*/company/*/blog/*
 // @noframes
@@ -8,6 +8,7 @@
 // @grant      none
 // @author     sjbog
 // @license    Mozilla Public License Version 2.0
+// @downloadURL https://github.com/sjbog/userscripts/raw/master/habr.user.js
 // ==/UserScript==
 
 "use strict";
@@ -42,4 +43,16 @@ for (let i=42; i >= 0; i--) {
     .forEach(elem => elem.remove());
   commentsElem.querySelectorAll(".content-list_nested-comments, .content-list__item_comment")
     .forEach(elem => { if (elem.childElementCount == 0) elem.remove() });
+}
+
+// Replace spoilers with HTML5 details/summary
+for (let item of document.getElementsByClassName("spoiler")) {
+  let summary = document.createElement("summary");
+  summary.textContent = item.getElementsByClassName("spoiler_title")[0].textContent;
+  
+  let details = document.createElement("details");
+  details.innerHTML = item.getElementsByClassName("spoiler_text")[0].innerHTML;
+  details.prepend(summary);
+  
+  item.replaceWith(details);
 }
