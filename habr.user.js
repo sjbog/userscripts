@@ -1,8 +1,9 @@
 // ==UserScript==
 // @name       Habr comments filter & enhancements
-// @version    1.1.3
+// @version    1.2.0
 // @match      https://habr.com/*/post/*
 // @match      https://habr.com/*/company/*/blog/*
+// @match      https://habr.com/*/company/*/blog/*/comments
 // @noframes
 // @run-at     document-idle
 // @grant      none
@@ -16,21 +17,32 @@
 
 const hideClassV3 = "hidden"; // Bootstrap v3
 const hideClassV4 = "d-none"; // Bootstrap v4
-const commentsScoreMin = 5;
-const commentsElem = document.getElementById("comments");
+const commentsScoreMin = 6;
+const commentsElem = document.getElementsByClassName("tm-article-comments")[0];
 
-commentsElem.querySelectorAll(".inline-list_comment-nav, .parent_id, .js-form_placeholder, .comment__collapse")
-  .forEach(elem => elem.remove());
 
-const comments = commentsElem.querySelectorAll(".comment");
+const comments = commentsElem.querySelectorAll("article.tm-comment-thread__comment");
 
-for (let comment of comments) {
-  let score = parseCommentScore(comment.querySelector(":scope .js-score"));
-  if (score < commentsScoreMin) {
-    // comment.classList.add(hideClassV3, hideClassV4);
-    comment.remove();
-  }
+function removeCommentsNavigation(commentsElem) {
+  commentsElem.querySelectorAll(".tm-comment__buttons, .tm-comment-thread__circle, .tm-comment__button, .tm-comment-footer__button, .tm-comment-thread__button")
+    .forEach(elem => elem.remove());
 }
+
+
+function removeComments() {
+  for (let comment of comments) {
+    let score = parseCommentScore(comment.querySelector(":scope .tm-votes-meter__value"));
+    if (score < commentsScoreMin) {
+      // comment.classList.add(hideClassV3, hideClassV4);
+      comment.remove();
+    }
+  }
+  removeCommentsNavigation(commentsElem)
+  removeEmptyCommentNodes(commentsElem, 23)
+  replaceSpoilers()
+}
+
+setTimeout(removeComments, 1000);
 
 function parseCommentScore(elem) {
   if (!elem) return 0;
@@ -38,22 +50,25 @@ function parseCommentScore(elem) {
   return Number.isFinite(score) ? score : 0;
 }
 
-// Remove empty nodes
-for (let i=42; i >= 0; i--) {
-  commentsElem.querySelectorAll(".content-list_nested-comments:empty, .content-list__item_comment:empty")
-    .forEach(elem => elem.remove());
-  commentsElem.querySelectorAll(".content-list_nested-comments, .content-list__item_comment")
-    .forEach(elem => { if (elem.childElementCount == 0) elem.remove() });
+function removeEmptyCommentNodes(commentsElem, cycles) {
+  for (let i=cycles; i >= 0; i--) {
+    commentsElem.querySelectorAll(".tm-comment-thread:empty, .tm-comment-thread__children:empty")
+      .forEach(elem => elem.remove());
+    commentsElem.querySelectorAll(".tm-comment-thread, .tm-comment-thread__children")
+      .forEach(elem => { if (elem.childElementCount == 0) elem.remove() });
+  }
 }
 
-// Replace spoilers with HTML5 details/summary
-for (let item of document.getElementsByClassName("spoiler")) {
-  let summary = document.createElement("summary");
-  summary.textContent = item.getElementsByClassName("spoiler_title")[0].textContent;
-  
-  let details = document.createElement("details");
-  details.innerHTML = item.getElementsByClassName("spoiler_text")[0].innerHTML;
-  details.prepend(summary);
-  
-  item.replaceWith(details);
+function replaceSpoilers() {
+  // Replace spoilers with HTML5 details/summary
+  for (let item of document.getElementsByClassName("spoiler")) {
+    let summary = document.createElement("summary");
+    summary.textContent = item.getElementsByClassName("spoiler_title")[0].textContent;
+
+    let details = document.createElement("details");
+    details.innerHTML = item.getElementsByClassName("spoiler_text")[0].innerHTML;
+    details.prepend(summary);
+
+    item.replaceWith(details);
+  }
 }
